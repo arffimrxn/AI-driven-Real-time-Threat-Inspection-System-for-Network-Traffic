@@ -27,33 +27,42 @@
         background-color: transparent !important;
     }
     
-   /* FIX: Force Bootstrap cards to use a sleek dark gray */
+    /* Force Bootstrap cards to use a sleek dark gray */
     .card {
         background-color: #21252b !important;
         border: 1px solid #4a5568 !important;
-        color: #e2e8f0 !important; /* NEW: Forces standard card text to be light */
+        color: #e2e8f0 !important;
     }
-    /* FIX: Darken the file upload input box to match the theme */
+    
+    /* Darken the file upload input box to match the theme */
     .form-control {
         background-color: #2d333b !important;
         color: #e2e8f0 !important;
         border: 1px solid #4a5568 !important;
     }
+    
+    /* Custom style for the new metrics panel */
+    .metrics-panel {
+        background-color: #1c2026;
+    }
 </style>
 </head>
 <body class="p-4">
 <div class="container-fluid">
+    
+    <!-- Cleaned Up Header -->
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2 border-secondary">
         <h2>Cyber Threat Intelligence Triage Dashboard</h2>
-        <span class="badge bg-primary">CRISP-DM ML Pipeline</span>
+        <span class="badge bg-primary fs-6">CRISP-DM ML Pipeline</span>
     </div>
 
-    <!-- Upload Card -->
+    <!-- Upload Card & Model Metrics -->
     <div class="row mb-4">
         <div class="col-md-6">
-            <div class="card p-3">
+            <div class="card p-3 h-100">
                 <h5 class="card-title">Ingest Telemetry Log (PCAP / CSV)</h5>
-              <form method="post" enctype="multipart/form-data">
+                
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     
                     {% if form.non_field_errors %}
@@ -66,39 +75,89 @@
                     
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-outline-info">Run AI Threat Analysis</button>
-                        <!-- NEW: Button to instantly reset the page -->
                         <a href="/" class="btn btn-outline-secondary">Clear Dashboard</a>
                     </div>
                 </form>
+<!-- NEW: Relocated Model Evaluation Section (Side-by-Side) -->
+                {% if training_metrics %}
+                <hr class="border-secondary mt-4 mb-3">
+                <h6 class="text-secondary mb-3">Baseline vs. Evaluation (Decision Tree)</h6>
+                <div class="row g-2">
+                    <!-- Baseline Column -->
+                    <div class="col-6">
+                        <div class="metrics-panel rounded p-2 border border-secondary text-center">
+                            <div class="small text-muted mb-2 fw-bold border-bottom border-secondary pb-1">Baseline (DT)</div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">ACC</span>
+                                <span class="text-light">{{ training_metrics.baseline.accuracy }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">PRE</span>
+                                <span class="text-light">{{ training_metrics.baseline.precision }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">REC</span>
+                                <span class="text-light">{{ training_metrics.baseline.recall }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">F1</span>
+                                <span class="text-light">{{ training_metrics.baseline.f1_score }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- A.R.T.I.S Column -->
+                    <div class="col-6">
+                        <div class="metrics-panel rounded p-2 border border-info text-center" style="background-color: rgba(13, 202, 240, 0.05);">
+                            <div class="small text-info mb-2 fw-bold border-bottom border-info pb-1">ML Engine (RF)</div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">ACC</span>
+                                <span class="text-info fw-bold">{{ training_metrics.random_forest.accuracy }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">PRE</span>
+                                <span class="text-info fw-bold">{{ training_metrics.random_forest.precision }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">REC</span>
+                                <span class="text-info fw-bold">{{ training_metrics.random_forest.recall }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between small px-2">
+                                <span class="text-secondary">F1</span>
+                                <span class="text-info fw-bold">{{ training_metrics.random_forest.f1_score }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
         
-        <!-- Metrics / KPI Cards -->
+        <!-- Live Inference KPI Cards -->
         {% if metrics %}
         <div class="col-md-6">
-            <div class="row g-2">
+            <div class="row g-2 h-100">
                 <div class="col-6">
-                    <div class="card p-3 text-center">
+                    <div class="card p-3 text-center h-100 d-flex justify-content-center">
                         <div class="text-secondary small">Total Inspected</div>
                         <div class="fs-4 fw-bold">{{ metrics.total_packets }}</div>
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card p-3 text-center">
+                    <div class="card p-3 text-center h-100 d-flex justify-content-center">
                         <div class="text-secondary small">Threats Flagged</div>
                         <div class="fs-4 fw-bold text-danger">{{ metrics.anomalies_flagged }}</div>
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card p-3 text-center">
+                    <div class="card p-3 text-center h-100 d-flex justify-content-center">
                         <div class="text-secondary small">Per-Packet Latency</div>
                         <div class="fs-4 fw-bold text-info">{{ metrics.inference_latency_ms }} ms</div>
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card p-3 text-center">
+                    <div class="card p-3 text-center h-100 d-flex justify-content-center">
                         <div class="text-secondary small">File Source</div>
-                        <div class="fs-6 text-truncate">{{ metrics.filename }}</div>
+                        <div class="fs-6 text-truncate" title="{{ metrics.filename }}">{{ metrics.filename }}</div>
                     </div>
                 </div>
             </div>
@@ -117,6 +176,7 @@
                         <th>ID</th>
                         <th>Source IP</th>
                         <th>Destination IP</th>
+                        <th>Domain</th>
                         <th>Protocol</th>
                         <th>Length</th>
                         <th>Confidence Score</th>
@@ -129,6 +189,7 @@
                         <td>{{ row.Packet_ID }}</td>
                         <td><code>{{ row.Src_IP }}</code></td>
                         <td><code>{{ row.Dst_IP }}</code></td>
+                        <td><code class="text-info">{{ row.Domain }}</code></td> 
                         <td>{{ row.Protocol }}</td>
                         <td>{{ row.Length }} B</td>
                         <td>{{ row.Threat_Score }}%</td>
