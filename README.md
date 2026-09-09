@@ -1,4 +1,4 @@
-# AI-Driven Real-Time Threat Inspection For Network Traffic
+# Machine Learning-based Real-Time Threat Inspection System for Network Traffic
 
 ## Project Overview
 This repository contains a Python-based backend framework designed to extract and structure specific domain-based Indicators of Compromise (IoCs) from raw Wireshark PCAP files. The tool automates the **Data Preparation** phase of the CRISP-DM methodology, bridging the gap between unstructured network telemetry and low-latency AI detection pipelines.
