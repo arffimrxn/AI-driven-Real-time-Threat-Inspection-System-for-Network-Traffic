@@ -4,7 +4,7 @@
 
 - **Research Title:** Machine Learning-based Real-Time Threat Inspection System for Network Traffic
 - **Group Number:** Group P
-- **Assigned Research Area:** Cyber Security / Network Traffic Analysis and Machine Learning
+- **Assigned Research Area:** Cyber Threat Intelligence / Network Traffic Analysis and Machine Learning
 
 ### Group Members
 
@@ -87,9 +87,10 @@ A standard **Decision Tree** algorithm is used as the baseline model. The Decisi
 **Dataset:** CIC-IDS2017
 
 **Primary Dataset:**
-```text
-Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv
-```
+
+
+[`Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv`](./05_Dataset_Inputs/CIC-IDS2017)
+
 
 ---
 
