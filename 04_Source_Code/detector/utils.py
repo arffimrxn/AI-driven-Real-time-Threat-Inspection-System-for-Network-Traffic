@@ -12,14 +12,15 @@ from django.conf import settings
 # ==========================================
 siem_logger = logging.getLogger('Wazuh_Integration')
 siem_logger.setLevel(logging.WARNING)
-file_handler = logging.FileHandler('artis_alerts.json')
+# Renamed from artis_alerts.json
+file_handler = logging.FileHandler('threat_alerts.json')
 siem_logger.addHandler(file_handler)
 
 def trigger_siem_alert(packet_data):
     """Writes a JSON alert to a local file for the Wazuh Agent to ingest."""
     alert_payload = {
         "timestamp": datetime.now().isoformat(),
-        "app_name": "ARTIS_Threat_Engine",
+        "app_name": "ML_Threat_Engine",  # Renamed from ARTIS_Threat_Engine
         "event_type": "Network_Anomaly",
         "domain_query": packet_data.get('Domain', 'N/A'),
         "src_ip": packet_data.get('Src_IP', 'Unknown'),
