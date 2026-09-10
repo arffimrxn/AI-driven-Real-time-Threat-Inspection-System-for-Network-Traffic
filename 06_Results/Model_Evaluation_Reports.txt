@@ -1,0 +1,25 @@
+A.R.T.I.S. Classification Reports (Real CIC-IDS2017 Data)
+====================================================
+
+1. RANDOM FOREST (PRIMARY MODEL)
+----------------------------------------------------
+              precision    recall  f1-score   support
+
+           0     0.9998    0.9999    0.9998     29262
+           1     0.9999    0.9998    0.9999     38462
+
+    accuracy                         0.9999     67724
+   macro avg     0.9999    0.9999    0.9999     67724
+weighted avg     0.9999    0.9999    0.9999     67724
+
+
+2. DECISION TREE (BASELINE MODEL)
+----------------------------------------------------
+              precision    recall  f1-score   support
+
+           0     0.9999    0.9997    0.9998     29262
+           1     0.9998    0.9999    0.9998     38462
+
+    accuracy                         0.9998     67724
+   macro avg     0.9998    0.9998    0.9998     67724
+weighted avg     0.9998    0.9998    0.9998     67724
